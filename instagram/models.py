@@ -19,12 +19,13 @@ class CrudMethods:
 
 class Profile(models.Model, CrudMethods):
     '''Model class for the user and his profile'''
-    username = models.CharField(max_length=30)
+    username = models.CharField(max_length=30, unique=True)
     bio = models.TextField(blank=True)
     profile_photo = models.ImageField(upload_to='images/', blank=True)
+    joined = models.DateTimeField(auto_now_add=True)
     follower = models.ForeignKey(User, related_name='following', blank=True, null=True, on_delete=models.CASCADE)
     following = models.ForeignKey(User, related_name='followers', blank=True, null=True, on_delete=models.CASCADE)
-    joined = models.DateTimeField(auto_now_add=True)
+    
 
     class Meta:
         unique_together = ('follower', 'following')
@@ -42,12 +43,12 @@ class Profile(models.Model, CrudMethods):
         return profiles
 
     def __str__(self):
-        return '{} follows {}'.format(self.follower,self.following)
+        return self.username
 
 class Post(models.Model, CrudMethods):
     '''Models Class to implement publishing of new posts/content'''
     post_caption = models.TextField()
-    post_image = models.ImageField(upload_to='images/', blank=True)
+    post_image = models.ImageField(upload_to='images/')
     user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
     published = models.DateTimeField(auto_now_add=True)
@@ -65,7 +66,7 @@ class Post(models.Model, CrudMethods):
         return posts
 
     def __str__(self):
-        return self.post
+        return self.post_caption
         
 class Comment(models.Model, CrudMethods):
     '''Method to allow user comments'''
@@ -74,7 +75,7 @@ class Comment(models.Model, CrudMethods):
     comment_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.comments
+        return self.comment
 
 class Like(models.Model, CrudMethods):
     '''Model class to allow users to like photos'''
@@ -83,4 +84,4 @@ class Like(models.Model, CrudMethods):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.value
+        return 'value: {}'.format(self.value)
