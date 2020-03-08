@@ -34,6 +34,18 @@ class TestProfile(TestCase):
         self.test_profile.update_class(username = 'newTest')
         self.assertEqual(self.test_profile.username, 'newTest')
 
+    def test_search_by_profile_name(self):
+        '''Test class for test search by profile username test case'''
+        self.test_profile.save_class()
+        profiles = Profile.search_profile('Test')
+        self.assertTrue(len(profiles) == 1)
+    
+    def test_get_profile_by_id(self):
+        '''Test getting a profile by it's id'''
+        self.test_profile.save_class()
+        profile = Profile.get_profile_by_id(self.test_profile.id)
+        self.assertEqual(self.test_profile.username, profile.username)
+
 class TestPost(TestCase):
     '''Test Class to test the Post Class'''
     def setUp(self) -> None:
@@ -68,6 +80,20 @@ class TestPost(TestCase):
         self.test_post.save_class()
         self.test_post.update_class(post_caption = 'You only live once')
         self.assertEqual(self.test_post.post_caption, 'You only live once')
+
+    def test_get_post_by_id(self):
+        '''Test getting a profile by it's id'''
+        self.test_post.save_class()
+        post = Post.get_post_by_id(self.test_post.id)
+        self.assertEqual(self.test_post.post_caption, post.post_caption)
+
+    def test_get_user_posts(self):
+        '''Test getting all the posts by a specific user'''
+        self.test_post.save_class()
+        self.test_post = Post(post_caption='Another a time to be alive',user_profile = self.test_profile)
+        self.test_post.save_class()
+        posts = Post.get_user_posts(self.test_profile.username)
+        self.assertTrue(len(posts) == 2)
 
 class TestComment(TestCase):
     '''Test Class for Comment Class'''
@@ -105,7 +131,6 @@ class TestComment(TestCase):
         self.test_comment.save_class()
         self.test_comment.update_class(comment = 'This is an updated comment')
         self.assertEqual(self.test_comment.comment, 'This is an updated comment')
-
 
 class TestLike(TestCase):
     '''Test Class for Like Class'''

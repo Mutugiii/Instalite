@@ -29,6 +29,18 @@ class Profile(models.Model, CrudMethods):
     class Meta:
         unique_together = ('follower', 'following')
 
+    @classmethod
+    def get_profile_by_id(cls, profile_id):
+        '''Classmethod to get a user by the profile id'''
+        profile = Profile.objects.filter(id = profile_id).first()
+        return profile
+
+    @classmethod
+    def search_profile(cls, search_name):
+        '''Classmethod to search for a profile by username'''
+        profiles = Profile.objects.filter(username__icontains = search_name)
+        return profiles
+
     def __str__(self):
         return '{} follows {}'.format(self.follower,self.following)
 
@@ -39,6 +51,18 @@ class Post(models.Model, CrudMethods):
     user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
     published = models.DateTimeField(auto_now_add=True)
+
+    @classmethod
+    def get_post_by_id(cls, post_id):
+        '''Classmethod to get a post by the given id'''
+        post = Post.objects.filter(id = post_id).first()
+        return post
+
+    @classmethod
+    def get_user_posts(cls, profile_name):
+        '''Classmethod to get the posts by a given user profile'''
+        posts = Post.objects.filter(user_profile__username__icontains = profile_name)
+        return posts
 
     def __str__(self):
         return self.post
