@@ -40,6 +40,12 @@ class Profile(models.Model, CrudMethods):
         return profile
 
     @classmethod
+    def get_profile_by_name(cls, search_name):
+        '''Classmethod to get a user by the search name'''
+        profile = Profile.objects.filter(username = search_name).first()
+        return profile
+
+    @classmethod
     def search_profile(cls, search_name):
         '''Classmethod to search for a profile by username'''
         profiles = Profile.objects.filter(username__icontains = search_name)

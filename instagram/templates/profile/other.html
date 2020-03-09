@@ -1,0 +1,21 @@
+{% include 'layout/base.html' %}
+{% block content %}
+<div class="container">
+    {{profile.username}}
+    {{profile.followers | length}}
+    {{profile.following | length}} <br>
+    <div>
+        {% autoescape on %}
+        {{profile.bio}}
+        {% endautoescape %}
+    </div>
+    {% if profile.profile_photo.url %}
+    <img src="{{profile.profile_photo.url}}">
+    {% endif %}
+    {% for post in posts %}
+    {{post.post_caption}}
+    <img src="{{post.post_image.url}}">
+    {{post.user}}
+    {% endfor %}
+</div>
+{% endblock %}

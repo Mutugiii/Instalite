@@ -107,3 +107,13 @@ def search(request):
         return HttpResponse(template.render(context, request))  
     else:
         return redirect('index')
+
+@login_required(login_url='/login/')
+def other_profile(request, user_name):
+    '''View function to show other users profile'''
+    user = Profile.get_profile_by_name(user_name)
+    template = loader.get_template('profile/other.html')
+    context = {
+        'profile': user
+    }
+    return HttpResponse(template.render(context, request))
