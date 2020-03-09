@@ -97,3 +97,13 @@ def upload_post(request):
 @login_required(login_url='/login/')
 def search(request):
     '''View Function to search for users'''
+    if 'searchusers' in request.GET and request.GET['searchusers']:
+        search_term = request.GET.get('searchusers')
+        users = Profile.search_profile(search_term)
+        template = loader.get_template('profile/search.html')
+        context = {
+            'users': users
+        }
+        return HttpResponse(template.render(context, request))  
+    else:
+        return redirect('index')

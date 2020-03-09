@@ -1,0 +1,10 @@
+{% include 'layout/base.html' %}
+{% block content %}
+{% if users %}
+{% for user in users %}
+{{user.username}}
+{% endfor %}
+{% else %}
+<p>There is no user matching the search term</p>
+{% endif %}
+{% endblock %}
