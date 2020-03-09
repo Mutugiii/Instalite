@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'instagram',
     'widget_tweaks',
     'tinymce',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
