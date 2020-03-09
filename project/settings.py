@@ -141,5 +141,8 @@ LOGIN_REDIRECT_URL = 'index'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.environ.get(BASE_DIR, '/static/')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
