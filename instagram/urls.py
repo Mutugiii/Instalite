@@ -8,7 +8,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('profile/', views.profile, name='profile'),
-    path('profile/update', views.update_profile, name='updateProfile'),
+    path('profile/update/<int:profile_id>', views.update_profile, name='updateProfile'),
     path('post/', views.upload_post, name='post'),
     path('search/', views.search, name='search'),
     path('profile/<str:user_name>', views.other_profile, name='otherprofile'),

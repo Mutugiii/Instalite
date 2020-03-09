@@ -5,9 +5,9 @@
         <input type="button" class="btn btn-outline-secondary" value="Post">
     </a>
 </div>
-{% for post in posts %}
-{{post.post_caption}}
-<img src="{{post.post_image.url}}">
-{{post.user}}
-{% endfor %}
+{% if posts %}
+{% include 'shared/sharedpost.html' %}
+{% else %}
+<p>Sorry there are no recent posts</p>
+{% endif %}
 {% endblock %}

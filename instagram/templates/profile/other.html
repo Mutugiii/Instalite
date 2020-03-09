@@ -1,6 +1,7 @@
 {% include 'layout/base.html' %}
 {% block content %}
 <div class="container">
+    {% if profile %}
     {{profile.username}}
     {{profile.followers | length}}
     {{profile.following | length}} <br>
@@ -12,10 +13,9 @@
     {% if profile.profile_photo.url %}
     <img src="{{profile.profile_photo.url}}">
     {% endif %}
-    {% for post in posts %}
-    {{post.post_caption}}
-    <img src="{{post.post_image.url}}">
-    {{post.user}}
-    {% endfor %}
+    {% if posts %}
+    {% include 'shared/sharedpost.html' %}
+    {% endif %}
+    {% endif %}
 </div>
 {% endblock %}

@@ -11,7 +11,12 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 class UpdateBioForm(forms.ModelForm):
-     class Meta:
+    profile_photo = CloudinaryFileField(
+        options = {
+            'folder': 'instagram'
+       }
+    )
+    class Meta:
         model = Profile
         exclude = ['follower', 'following', 'joined', 'user']
 

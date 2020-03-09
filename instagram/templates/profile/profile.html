@@ -12,13 +12,14 @@
     {% if profile.profile_photo.url %}
     <img src="{{profile.profile_photo.url}}">
     {% endif %}
-    <!-- <a href="{% url 'updateProfile' %}">
+    <a href="{% url 'updateProfile' profile.id %}">
         <button>Update Profile</button>
-    </a> -->
-    {% for post in posts %}
-    {{post.post_caption}}
-    <img src="{{post.post_image.url}}">
-    {{post.user}}
-    {% endfor %}
+    </a>
+    <h3>Posts</h3>
+    {% if posts %}
+    {% include 'shared/sharedpost.html' %}
+    {% else %}
+    <p>There are no posts</p>
+    {% endif %}
 </div>
 {% endblock %}

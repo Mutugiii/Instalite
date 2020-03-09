@@ -24,7 +24,6 @@ def signup(request):
             user.save()
             login(request, user)
             profile = Profile(username = user.username, user = request.user)
-            print(profile.user)
             profile.save()
             return redirect('index')
     else:
@@ -45,8 +44,6 @@ def profile(request):
     '''User profile view'''
     profile = Profile.objects.filter(username = request.user.username).first()
     posts = Post.get_user_posts(request.user.username)
-    print(request.user)
-    print(posts)
     template = loader.get_template('profile/profile.html')
     context = {
         'profile': profile,
@@ -55,17 +52,18 @@ def profile(request):
     return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/login/')
-def update_profile(request):
+def update_profile(request, profile_id):
     '''View Function to update user profile'''
     current_user = request.user
-    # profile = Profile.objects.filter(username = request.user.username).first()
     if request.method == 'POST':
         form = UpdateBioForm(request.POST, request.FILES)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            bio = form.cleaned_data['bio']
-            user = request.user
-            profile = Profile.objects.filter(username = user.username).update(username = username, bio=bio, user = user)
+            try:
+                Profile.get_profile_by_id(profile_id)
+                profile = form.save(commit=False)
+                profile.save()
+            except ValueError:
+                return redirect('index')
             return redirect('profile')
     else:
         form = UpdateBioForm()
@@ -112,8 +110,10 @@ def search(request):
 def other_profile(request, user_name):
     '''View function to show other users profile'''
     user = Profile.get_profile_by_name(user_name)
+    posts = Post.get_user_posts(user_name)
     template = loader.get_template('profile/other.html')
     context = {
-        'profile': user
+        'profile': user,
+        'posts': posts
     }
     return HttpResponse(template.render(context, request))
