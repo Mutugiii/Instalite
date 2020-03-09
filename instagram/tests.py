@@ -1,5 +1,7 @@
 from django.test import TestCase
 from .models import Comment, Profile, Post, Like
+from django.urls import resolve, reverse
+from .views import signup
 
 class TestProfile(TestCase):
     '''Test Class to test the Profile Class'''
@@ -168,3 +170,11 @@ class TestLike(TestCase):
         self.test_like.save_class()
         self.test_like.update_class(like = 'This is an updated like')
         self.assertEqual(self.test_like.like, 'This is an updated like')
+
+class SignUpTests(TestCase):
+    '''Test class for user sign up'''
+    def test_signup_status_code(self):
+        '''To test the status code on signup'''
+        url = reverse('signup')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)

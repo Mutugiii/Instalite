@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'instagram',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +119,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+#This configuration is telling Django where to redirect the user after a successful login.
+LOGIN_REDIRECT_URL = 'index'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
