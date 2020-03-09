@@ -4,6 +4,7 @@ from .models import Post, Profile, Comment, Like
 from .forms import SignUpForm, UpdateBioForm, PostForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from .email import send_welcome_email
 
 @login_required(login_url='/login/')
 def index(request):
@@ -25,6 +26,7 @@ def signup(request):
             login(request, user)
             profile = Profile(username = user.username, user = request.user)
             profile.save()
+            send_welcome_email(request.user.username, request.user.email)
             return redirect('index')
     else:
         form = SignUpForm()
