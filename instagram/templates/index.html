@@ -1,4 +1,11 @@
 {% include 'layout/base.html' %}
 {% block content %}
-<h1>Hello World!!!</h1>
+<div class="text-center">
+    <a href="{% url 'post' %}">
+        <input type="button" class="btn btn-outline-secondary" value="Post">
+    </a>
+</div>
+{% for post in posts %}
+{{post.post_caption}}
+{% endfor %}
 {% endblock %}

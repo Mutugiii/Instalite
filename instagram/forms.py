@@ -13,4 +13,8 @@ class UpdateBioForm(forms.ModelForm):
      class Meta:
         model = Profile
         exclude = ['follower', 'following', 'joined', 'user']
-        
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        exclude = ['user_profile', 'likes', 'published']

@@ -1,7 +1,7 @@
 from django.shortcuts import render, loader, redirect
 from django.http import HttpResponse
 from .models import Post, Profile, Comment, Like
-from .forms import SignUpForm, UpdateBioForm
+from .forms import SignUpForm, UpdateBioForm, PostForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -9,8 +9,9 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     '''View Function for the Main page'''
     template = loader.get_template('index.html')
+    posts = Post.objects.all()
     context = {
-        'message': 'Welcome'
+        'posts': posts
     }
     return HttpResponse(template.render(context, request))
 
@@ -69,3 +70,22 @@ def update_profile(request):
         'form': form
     }
     return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login/')
+def upload_post(request):
+    '''View function to upload a post'''
+    current_user = request.user
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = current_user
+            post.save()
+            return redirect('index')
+    else:
+        form = PostForm()
+    template = loader.get_template('posts/post.html')
+    context = {
+        'form': form
+    }
+    return HttpResponse(template.render(context, request))  
