@@ -1,0 +1,17 @@
+{% include 'layout/base.html' %}
+{% block content %}
+<div class="container">
+    {{profile.username}}
+    {{profile.followers | length}}
+    {{profile.following | length}} <br>
+    <div>
+        {% autoescape on %}
+        {{profile.bio}}
+        {% endautoescape %}
+    </div>
+    <img src="{{profile.profile_photo}}">
+    <!-- <a href="{% url 'updateProfile' %}">
+        <button>Update Profile</button>
+    </a> -->
+</div>
+{% endblock %}

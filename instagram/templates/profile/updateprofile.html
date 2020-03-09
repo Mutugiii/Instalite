@@ -1,0 +1,21 @@
+{% extends 'profile/profile.html' %}
+
+{% block content %}
+<br>
+<div class="container">  
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-8">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Sign up</h3>
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {% include 'layout/form.html' %}
+            <button type="submit" class="btn btn-primary">Edit Profile</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

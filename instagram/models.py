@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from tinymce.models import HTMLField
 
 class CrudMethods:
     '''Method class for Common methods'''
@@ -20,9 +21,10 @@ class CrudMethods:
 class Profile(models.Model, CrudMethods):
     '''Model class for the user and his profile'''
     username = models.CharField(max_length=30, unique=True)
-    bio = models.TextField(blank=True)
+    bio = HTMLField()
     profile_photo = models.ImageField(upload_to='images/', blank=True)
     joined = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True,)
     follower = models.ForeignKey(User, related_name='following', blank=True, null=True, on_delete=models.CASCADE)
     following = models.ForeignKey(User, related_name='followers', blank=True, null=True, on_delete=models.CASCADE)
     
@@ -47,7 +49,7 @@ class Profile(models.Model, CrudMethods):
 
 class Post(models.Model, CrudMethods):
     '''Models Class to implement publishing of new posts/content'''
-    post_caption = models.TextField()
+    post_caption = HTMLField()
     post_image = models.ImageField(upload_to='images/')
     user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
@@ -62,7 +64,7 @@ class Post(models.Model, CrudMethods):
     @classmethod
     def get_user_posts(cls, profile_name):
         '''Classmethod to get the posts by a given user profile'''
-        posts = Post.objects.filter(user_profile__username__icontains = profile_name)
+        posts = Post.objects.filter(user_profile__username = profile_name)
         return posts
 
     def __str__(self):
@@ -70,7 +72,7 @@ class Post(models.Model, CrudMethods):
         
 class Comment(models.Model, CrudMethods):
     '''Method to allow user comments'''
-    comment = models.TextField()
+    comment = HTMLField()
     comment_post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
