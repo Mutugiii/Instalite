@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from decouple import config
 import dj_database_url
+import cloudinary
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'tinymce',
     'whitenoise.runserver_nostatic',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +136,20 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+#Cloudinary Configurations
+# cloudinary.config(
+#   cloud_name = os.environ.get('CLOUD_NAME'),
+#   api_key = os.environ.get('API_KEY'),
+#   api_secret = os.environ.get('API_SECRET'),
+# )
+
+cloudinary.config(
+  cloud_name = 'mutugiii',
+  api_key = '757144137756987',
+  api_secret = 'qY6qUOv7BMaOovas_ceqNoltN1I',
+)
 
 #This configuration is telling Django where to redirect the user after a successful login.
 LOGIN_REDIRECT_URL = 'index'

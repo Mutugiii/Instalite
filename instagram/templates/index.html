@@ -7,5 +7,7 @@
 </div>
 {% for post in posts %}
 {{post.post_caption}}
+<img src="{{post.post_image.url}}">
+{{post.user}}
 {% endfor %}
 {% endblock %}

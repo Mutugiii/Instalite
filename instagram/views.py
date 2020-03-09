@@ -21,9 +21,11 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            profile = Profile(username = user.username)
-            profile.save()
+            user.save()
             login(request, user)
+            profile = Profile(username = user.username, user = request.user)
+            print(profile.user)
+            profile.save()
             return redirect('index')
     else:
         form = SignUpForm()
@@ -43,6 +45,8 @@ def profile(request):
     '''User profile view'''
     profile = Profile.objects.filter(username = request.user.username).first()
     posts = Post.get_user_posts(request.user.username)
+    print(request.user)
+    print(posts)
     template = loader.get_template('profile/profile.html')
     context = {
         'profile': profile,
@@ -89,3 +93,7 @@ def upload_post(request):
         'form': form
     }
     return HttpResponse(template.render(context, request))  
+
+@login_required(login_url='/login/')
+def search(request):
+    '''View Function to search for users'''

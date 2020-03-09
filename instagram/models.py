@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
+from cloudinary.models import CloudinaryField
 
 class CrudMethods:
     '''Method class for Common methods'''
@@ -20,11 +21,11 @@ class CrudMethods:
 
 class Profile(models.Model, CrudMethods):
     '''Model class for the user and his profile'''
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=40, unique=True)
     bio = HTMLField()
-    profile_photo = models.ImageField(upload_to='images/', blank=True)
+    profile_photo = CloudinaryField('image')
     joined = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True,)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     follower = models.ForeignKey(User, related_name='following', blank=True, null=True, on_delete=models.CASCADE)
     following = models.ForeignKey(User, related_name='followers', blank=True, null=True, on_delete=models.CASCADE)
     
@@ -50,8 +51,9 @@ class Profile(models.Model, CrudMethods):
 class Post(models.Model, CrudMethods):
     '''Models Class to implement publishing of new posts/content'''
     post_caption = HTMLField()
-    post_image = models.ImageField(upload_to='images/')
-    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    post_image = CloudinaryField('image')
+    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     likes = models.IntegerField(default=0)
     published = models.DateTimeField(auto_now_add=True)
 
@@ -64,7 +66,7 @@ class Post(models.Model, CrudMethods):
     @classmethod
     def get_user_posts(cls, profile_name):
         '''Classmethod to get the posts by a given user profile'''
-        posts = Post.objects.filter(user_profile__username = profile_name)
+        posts = Post.objects.filter(user__username = profile_name)
         return posts
 
     def __str__(self):

@@ -9,9 +9,16 @@
         {{profile.bio}}
         {% endautoescape %}
     </div>
-    <img src="{{profile.profile_photo}}">
+    {% if profile.profile_photo.url %}
+    <img src="{{profile.profile_photo.url}}">
+    {% endif %}
     <!-- <a href="{% url 'updateProfile' %}">
         <button>Update Profile</button>
     </a> -->
+    {% for post in posts %}
+    {{post.post_caption}}
+    <img src="{{post.post_image.url}}">
+    {{post.user}}
+    {% endfor %}
 </div>
 {% endblock %}
