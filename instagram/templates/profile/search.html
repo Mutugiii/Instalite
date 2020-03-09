@@ -1,8 +1,17 @@
 {% include 'layout/base.html' %}
 {% block content %}
 {% if users %}
+<div class="container">
+    <div class="text-center" style="font-size: 2rem;">Search Results</div>
+    <hr>
+</div>
 {% for user in users %}
-<a href="{% url 'otherprofile' user.username%}">{{user.username}}</a>
+<div class="container">
+    <div class="text-center">
+        <a href="{% url 'otherprofile' user.username%}">{{user.username}}</a>
+    </div>
+    <hr>
+</div>
 {% endfor %}
 {% else %}
 <p>There is no user matching the search term</p>

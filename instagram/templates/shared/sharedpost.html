@@ -1,3 +1,4 @@
+{% if posts %}
 {% for post in posts %}
 <br>
 <div class="container">
@@ -18,3 +19,6 @@
 </div>
 <br>
 {% endfor %}
+{% else %}
+<p class="text-center">Sorry there are no recent posts</p>
+{% endif %}

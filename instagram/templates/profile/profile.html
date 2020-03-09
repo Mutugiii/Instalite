@@ -1,25 +1,8 @@
 {% include 'layout/base.html' %}
 {% block content %}
 <div class="container">
-    {{profile.username}}
-    {{profile.followers | length}}
-    {{profile.following | length}} <br>
-    <div>
-        {% autoescape on %}
-        {{profile.bio}}
-        {% endautoescape %}
-    </div>
-    {% if profile.profile_photo.url %}
-    <img src="{{profile.profile_photo.url}}">
-    {% endif %}
-    <a href="{% url 'updateProfile' profile.id %}">
-        <button>Update Profile</button>
-    </a>
-    <h3>Posts</h3>
-    {% if posts %}
+    {% include 'shared/sharedprofile.html' %}
+    <h3 class="text-center">Posts</h3>
     {% include 'shared/sharedpost.html' %}
-    {% else %}
-    <p>There are no posts</p>
-    {% endif %}
 </div>
 {% endblock %}

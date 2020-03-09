@@ -5,9 +5,5 @@
         <input type="button" class="btn btn-outline-secondary" value="Post">
     </a>
 </div>
-{% if posts %}
 {% include 'shared/sharedpost.html' %}
-{% else %}
-<p>Sorry there are no recent posts</p>
-{% endif %}
 {% endblock %}

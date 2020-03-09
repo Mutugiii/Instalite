@@ -1,21 +1,7 @@
 {% include 'layout/base.html' %}
 {% block content %}
 <div class="container">
-    {% if profile %}
-    {{profile.username}}
-    {{profile.followers | length}}
-    {{profile.following | length}} <br>
-    <div>
-        {% autoescape on %}
-        {{profile.bio}}
-        {% endautoescape %}
-    </div>
-    {% if profile.profile_photo.url %}
-    <img src="{{profile.profile_photo.url}}">
-    {% endif %}
-    {% if posts %}
+    {% include 'shared/sharedprofile.html' %}
     {% include 'shared/sharedpost.html' %}
-    {% endif %}
-    {% endif %}
 </div>
 {% endblock %}
