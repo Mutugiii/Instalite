@@ -2,6 +2,7 @@
 {% block content %}
 <div class="container">
     <h3 class="text-center">Posts</h3>
+    <!-- User Profile -->
     <div>
         <div class="text-center">
             {{profile.username}}
@@ -31,6 +32,7 @@
     </div>
     {% endif %}
     <hr>
-    {% include 'shared/sharedpost.html' %}
+    <!-- User Posts -->
+    {% include 'shared/sharedprofileposts.html' %}
 </div>
 {% endblock %}

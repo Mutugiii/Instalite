@@ -1,0 +1,21 @@
+{% block styles %}
+<style>
+    .hovercard:hover {
+        opacity: 0.7
+    }
+</style>
+{% endblock %}
+
+{% if posts %}
+<hr class="mt-4">
+<div class="card-columns">
+    {% for post in posts %}
+    <a href="{% url 'specificpost' post.id %}">
+        <img src="{{post.post_image.url}}" class="img-responsive hovercard" style="max-width: 500px; max-height: 400px; padding: 13px;border-radius: 30px;">
+    </a>    
+    {% endfor %}
+</div>
+</div>
+{% else %}
+<p class="text-center">Sorry there are no recent posts</p>
+{% endif %}
