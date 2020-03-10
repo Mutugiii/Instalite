@@ -1,7 +1,7 @@
 from django.shortcuts import render, loader, redirect
 from django.http import HttpResponse
 from .models import Post, Profile, Comment, Like
-from .forms import SignUpForm, UpdateBioForm, PostForm
+from .forms import SignUpForm, UpdateBioForm, PostForm, CommentForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .email import send_welcome_email
@@ -18,6 +18,8 @@ def index(request):
 
 def signup(request):
     '''View Function for user signup'''
+    if request.user:
+        return redirect('index')
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -119,3 +121,35 @@ def other_profile(request, user_name):
         'posts': posts
     }
     return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login/')
+def specificpost(request, post_id):
+    '''View function to view a specific post'''
+    post = Post.get_post_by_id(post_id)
+    comments = Comment.get_post_comments(post_id)
+    template = loader.get_template('posts/specific.html')
+    context = {
+        'comments': comments,
+        'post': post
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login/')
+def comments(request, post_id):
+    '''View function to write a comment to a post'''
+    post = Post.get_post_by_id(post_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.comment_post = post
+            comment.save()
+            return redirect('specificpost', post_id)
+    else:
+        form = CommentForm()
+    template = loader.get_template('posts/add_comment.html')
+    context = {
+        'form': form,
+    }
+    return HttpResponse(template.render(context, request))        

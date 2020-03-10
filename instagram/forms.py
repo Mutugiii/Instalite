@@ -30,3 +30,8 @@ class PostForm(forms.ModelForm):
         model = Post
         exclude = ['user_profile', 'likes', 'published']
         fields = ('post_caption', 'post_image')
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ['comment_post', 'comment_profile', 'user']

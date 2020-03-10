@@ -1,0 +1,29 @@
+{% extends 'layout/base.html'%}
+{% block content %}
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="card">
+                <div class="card-body">
+                    <img src="{{post.post_image.url}}" href="{% url 'specificpost' post.id%}" class="img-responsive"
+                        style="max-width: 500px; max-height: 400px; padding: 13px;border-radius: 30px;">
+                </div>
+                <div class="card-footer text-muted">
+                    <span style="font-weight:900">{{post.user}}:</span>
+                    <span class="text-center">{{post.post_caption}}</span>
+                    <br>
+                    {% if comments %}
+                    <p class="text-center">-Comments-</p>
+                    {% for comment in comments %}
+                    <span style="font-weight:900">{{comment.user}}:</span>
+                    <span class="text-center">{{comment.comment}}</span>
+                    <br>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

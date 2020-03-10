@@ -81,8 +81,15 @@ class Post(models.Model, CrudMethods):
 class Comment(models.Model, CrudMethods):
     '''Method to allow user comments'''
     comment = HTMLField()
-    comment_post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    comment_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    comment_post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    comment_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+    @classmethod
+    def get_post_comments(cls, post_id):
+        '''Classmethod to get the posts by a given user profile'''
+        post = Comment.objects.filter(comment_post = post_id)
+        return post
 
     def __str__(self):
         return self.comment

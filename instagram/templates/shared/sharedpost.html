@@ -6,12 +6,18 @@
         <div class="col-lg-6 col-md-8 col-sm-10">
             <div class="card">
                 <div class="card-body">
-                    <img src="{{post.post_image.url}}" class="img-responsive"
-                        style="max-width: 500px; max-height: 400px; padding: 13px;border-radius: 30px;">
+                    <a href="{% url 'specificpost' post.id %}">
+                        <img src="{{post.post_image.url}}" class="img-responsive"
+                            style="max-width: 500px; max-height: 400px; padding: 13px;border-radius: 30px;">
+                    </a>
                 </div>
                 <div class="card-footer text-muted">
                     <span style="font-weight:900">{{post.user}}:</span>
                     <span class="text-center">{{post.post_caption}}</span>
+                    <br>
+                    <a href="{% url 'comment' post.id %}">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0">Comment</button>
+                    </a>
                 </div>
             </div>
         </div>
