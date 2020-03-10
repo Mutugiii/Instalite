@@ -1,13 +1,36 @@
 {% include 'layout/base.html' %}
 {% block content %}
 <div class="container">
-    {% include 'shared/sharedprofile.html' %}
     <h3 class="text-center">Posts</h3>
+    <div>
+        <div class="text-center">
+            {{profile.username}}
+            <a href="{% url 'updateProfile' profile.id %}">
+                <button class="btn btn-sm btn-outline-secondary">Update Profile</button>
+            </a>
+            <br><br>
+            <div style="font-weight: bolder;">
+                {{posts | length}} Posts <span style="margin-right: 20px;"></span>
+                {{followers.count}} Followers <span style="margin-right: 20px;"></span>
+                {{following.count}} Following
+            </div>
+            <br>
+            {% if profile.bio %}
+            Bio
+            <div>
+                {% autoescape on %}
+                {{profile.bio}}
+                {% endautoescape %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
     {% if message %}
     <div class="alert alert-danger hidden">
         {{message}}
     </div>
     {% endif %}
+    <hr>
     {% include 'shared/sharedpost.html' %}
 </div>
 {% endblock %}

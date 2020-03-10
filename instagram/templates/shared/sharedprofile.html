@@ -1,20 +1,20 @@
 <div>
     <div class="text-center">
         {{profile.username}}
-        {% if request.user.username == profile.username %}
-        <a href="{% url 'updateProfile' profile.id %}">
-            <button class="btn btn-sm btn-outline-secondary">Update Profile</button>
+        {% if status == True %}
+        <a href="{% url 'unfollow' profile.id %}">
+            <input type="submit" class="btn btn-sm btn-outline-danger" value="Unfollow">
         </a>
         {% else %}
-        <form action="{% url 'follow' request.user.id %}" class="form-inline justify-content-center">
-            <input type="submit" class="btn btn-sm btn-outline-secondary" name="newfollow" value="Follow">
-        </form>
+        <a href="{% url 'follow' profile.id %}">
+            <input type="submit" class="btn btn-sm btn-outline-primary" value="Follow">
+        </a>
         {% endif %}
         <br><br>
         <div style="font-weight: bolder;">
             {{posts | length}} Posts <span style="margin-right: 20px;"></span>
-            {{profile.followers | length}} Followers <span style="margin-right: 20px;"></span>
-            {{following | length}} Following
+            {{followers.count}} Followers <span style="margin-right: 20px;"></span>
+            {{following.count}} Following
         </div>
         <br>
         {% if profile.bio %}

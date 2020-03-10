@@ -25,13 +25,7 @@ class Profile(models.Model, CrudMethods):
     bio = HTMLField()
     profile_photo = CloudinaryField('image')
     joined = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    follower = models.ForeignKey(User, related_name='following', blank=True, null=True, on_delete=models.CASCADE)
-    following = models.ForeignKey(User, related_name='followers', blank=True, null=True, on_delete=models.CASCADE)
-    
-
-    class Meta:
-        unique_together = ('follower', 'following')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='profile')    
 
     @classmethod
     def get_profile_by_id(cls, profile_id):
@@ -59,7 +53,7 @@ class Post(models.Model, CrudMethods):
     post_caption = HTMLField()
     post_image = CloudinaryField('image')
     user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='posts')
     likes = models.IntegerField(default=0)
     published = models.DateTimeField(auto_now_add=True)
 
@@ -102,3 +96,17 @@ class Like(models.Model, CrudMethods):
 
     def __str__(self):
         return 'value: {}'.format(self.value)
+
+class Follow(models.Model, CrudMethods):
+    follower = models.ForeignKey(Profile, related_name='following', on_delete=models.CASCADE)
+    following = models.ForeignKey(Profile, related_name='followers', on_delete=models.CASCADE)
+
+    @classmethod
+    def unfollow_user(self, follower, following):
+        '''Class method to unfollow a user'''
+        rel = Follow.objects.filter(follower = follower, following = following)
+        rel.delete()
+        return True
+
+    def __str__(self):
+        return f'{self.following} following {self.follower}'

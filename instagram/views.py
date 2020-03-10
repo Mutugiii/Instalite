@@ -1,9 +1,10 @@
-from django.shortcuts import render, loader, redirect
+from django.shortcuts import render, loader, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Post, Profile, Comment, Like
+from .models import Post, Profile, Comment, Like, Follow
 from .forms import SignUpForm, UpdateBioForm, PostForm, CommentForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .email import send_welcome_email
 
 @login_required(login_url='/login/')
@@ -44,15 +45,17 @@ def logout_user(request):
 @login_required(login_url='/login/')
 def profile(request):
     '''User profile view'''
+    user = get_object_or_404(User, username = request.user.username)
     profile = Profile.objects.filter(username = request.user.username).first()
     posts = Post.get_user_posts(request.user.username)
-    userfollowing = profile.following
-    print(userfollowing)
+    followers = Follow.objects.filter(following=user.profile)
+    following = Follow.objects.filter(follower=user.profile)
     template = loader.get_template('profile/profile.html')
     context = {
         'profile': profile,
         'posts': posts,
-        'following': userfollowing,
+        'followers': followers,
+        'following': following,
     }
     return HttpResponse(template.render(context, request))
 
@@ -114,12 +117,25 @@ def search(request):
 @login_required(login_url='/login/')
 def other_profile(request, user_name):
     '''View function to show other users profile'''
-    user = Profile.get_profile_by_name(user_name)
+    user = get_object_or_404(User, username = user_name)
+    if request.user == user:
+        return redirect('profile')
     posts = Post.get_user_posts(user_name)
+    followers = Follow.objects.filter(following=user.profile)
+    following = Follow.objects.filter(follower=user.profile)
+    follow_status = None
+    for follower in followers:
+        if request.user.profile == follower.follower:
+            follow_status = True
+        else:
+            follow_status = False
     template = loader.get_template('profile/other.html')
     context = {
         'profile': user,
-        'posts': posts
+        'posts': posts,
+        'status': follow_status,
+        'followers': followers,
+        'following': following,
     }
     return HttpResponse(template.render(context, request))
 
@@ -158,15 +174,21 @@ def comments(request, post_id):
 @login_required(login_url='/login/')
 def follow(request,user_id):
     '''View Function to follow users'''
-    if 'newfollow' in request.GET:
+    if request.method == 'GET':
         user = Profile.get_profile_by_id(user_id)
-        user.following_id = user_id
-        user.save()
-        template = loader.get_template('profile/profile.html')
-        message = 'Now Following'
-        context = {
-            'message': message,
-        }
-        return HttpResponse(template.render(context, request))  
+        tofollow = Follow(follower = request.user.profile , following = user)
+        tofollow.save()
+        return redirect('otherprofile', user.username)
     else:
-        return redirect('index')
+        return redirect('profile')
+
+@login_required(login_url='/login/')
+def unfollow(request, user_id):
+    '''View function to unfollow users'''
+    if request.method == 'GET':
+        user = Profile.get_profile_by_id(user_id)
+        delete_true = Follow.unfollow_user(request.user.profile, user)
+        if delete_true == True:
+            return redirect('otherprofile', user.username)
+    else:
+        return redirect('profile')
