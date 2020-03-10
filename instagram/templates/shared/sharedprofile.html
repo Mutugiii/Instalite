@@ -5,12 +5,16 @@
         <a href="{% url 'updateProfile' profile.id %}">
             <button class="btn btn-sm btn-outline-secondary">Update Profile</button>
         </a>
+        {% else %}
+        <form action="{% url 'follow' request.user.id %}" class="form-inline justify-content-center">
+            <input type="submit" class="btn btn-sm btn-outline-secondary" name="newfollow" value="Follow">
+        </form>
         {% endif %}
         <br><br>
         <div style="font-weight: bolder;">
             {{posts | length}} Posts <span style="margin-right: 20px;"></span>
             {{profile.followers | length}} Followers <span style="margin-right: 20px;"></span>
-            {{profile.following | length}} Following
+            {{following | length}} Following
         </div>
         <br>
         {% if profile.bio %}

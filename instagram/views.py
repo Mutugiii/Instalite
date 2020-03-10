@@ -48,10 +48,13 @@ def profile(request):
     '''User profile view'''
     profile = Profile.objects.filter(username = request.user.username).first()
     posts = Post.get_user_posts(request.user.username)
+    userfollowing = profile.following
+    print(userfollowing)
     template = loader.get_template('profile/profile.html')
     context = {
         'profile': profile,
-        'posts': posts
+        'posts': posts,
+        'following': userfollowing,
     }
     return HttpResponse(template.render(context, request))
 
@@ -152,4 +155,20 @@ def comments(request, post_id):
     context = {
         'form': form,
     }
-    return HttpResponse(template.render(context, request))        
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login/')
+def follow(request,user_id):
+    '''View Function to follow users'''
+    if 'newfollow' in request.GET:
+        user = Profile.get_profile_by_id(user_id)
+        user.following_id = user_id
+        user.save()
+        template = loader.get_template('profile/profile.html')
+        message = 'Now Following'
+        context = {
+            'message': message,
+        }
+        return HttpResponse(template.render(context, request))  
+    else:
+        return redirect('index')

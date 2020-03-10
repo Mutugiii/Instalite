@@ -3,6 +3,11 @@
 <div class="container">
     {% include 'shared/sharedprofile.html' %}
     <h3 class="text-center">Posts</h3>
+    {% if message %}
+    <div class="alert alert-danger hidden">
+        {{message}}
+    </div>
+    {% endif %}
     {% include 'shared/sharedpost.html' %}
 </div>
 {% endblock %}
