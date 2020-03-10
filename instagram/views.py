@@ -18,8 +18,6 @@ def index(request):
 
 def signup(request):
     '''View Function for user signup'''
-    if request.user:
-        return redirect('index')
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
