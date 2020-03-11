@@ -26,7 +26,7 @@ def signup(request):
             email = form.cleaned_data['email']
             user = form.save()
             user.save()
-            send_welcome_email(username,email)
+            send_welcome_email(name,email)
             login(request, user)
             profile = Profile(username = user.username, user = request.user)
             profile.save()
