@@ -22,9 +22,11 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            name = form.cleaned_data['username']
+            email = form.cleaned_data['email']
             user = form.save()
             user.save()
-            send_welcome_email(request.user.username, request.user.email)
+            send_welcome_email(username,email)
             login(request, user)
             profile = Profile(username = user.username, user = request.user)
             profile.save()
