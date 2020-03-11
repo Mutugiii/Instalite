@@ -13,7 +13,7 @@ def index(request):
     template = loader.get_template('index.html')
     posts = Post.objects.all()
     context = {
-        'posts': posts
+        'posts': posts,
     }
     return HttpResponse(template.render(context, request))
 
@@ -24,10 +24,10 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             user.save()
+            send_welcome_email(request.user.username, request.user.email)
             login(request, user)
             profile = Profile(username = user.username, user = request.user)
             profile.save()
-            send_welcome_email(request.user.username, request.user.email)
             return redirect('index')
     else:
         form = SignUpForm()

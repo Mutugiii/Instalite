@@ -54,7 +54,6 @@ class Post(models.Model, CrudMethods):
     post_image = CloudinaryField('image')
     user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='posts')
-    likes = models.IntegerField(default=0)
     published = models.DateTimeField(auto_now_add=True)
 
     @classmethod
@@ -90,7 +89,6 @@ class Comment(models.Model, CrudMethods):
 
 class Like(models.Model, CrudMethods):
     '''Model class to allow users to like photos'''
-    value = models.IntegerField(blank=True)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 

@@ -138,17 +138,11 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
-#Cloudinary Configurations
-# cloudinary.config(
-#   cloud_name = os.environ.get('CLOUD_NAME'),
-#   api_key = os.environ.get('API_KEY'),
-#   api_secret = os.environ.get('API_SECRET'),
-# )
-
+# Cloudinary Configurations
 cloudinary.config(
-  cloud_name = 'mutugiii',
-  api_key = '757144137756987',
-  api_secret = 'qY6qUOv7BMaOovas_ceqNoltN1I',
+  cloud_name = os.environ.get('CLOUD_NAME'),
+  api_key = os.environ.get('API_KEY'),
+  api_secret = os.environ.get('API_SECRET'),
 )
 
 #This configuration is telling Django where to redirect the user after a successful login.
