@@ -5,6 +5,13 @@
 ## Description
 A python django app that is a lite clone of the instagram web app
 
+## User Stories
+- User can post a picture with a caption
+- User can comment on post
+- User can View image description
+- User can update profile
+- User can follow other users 
+
 
 # Installation
 
@@ -21,7 +28,7 @@ A python django app that is a lite clone of the instagram web app
 ```
 ## Run initial migration
 ```bash
-   $ python3.6 manage.py makemigrations africa
+   $ python3.6 manage.py makemigrations instagram
    $ python3.6 manage.py migrate
     
 ```
